@@ -1,0 +1,6 @@
+# FocalTech Systems Co., Ltd Fingerprint (2808:5952)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2808", ATTRS{idProduct}=="5952", ATTRS{dev}=="*", TEST=="power/control", ATTR{power/control}="auto", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2808", ATTRS{idProduct}=="5952", ENV{LIBFPRINT_DRIVER}="FocalTech Systems Co., Ltd Fingerprint"
+
+# Disable autosuspend to prevent device powering down after resume
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2808", ATTR{idProduct}=="5952", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"

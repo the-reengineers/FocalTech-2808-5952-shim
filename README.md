@@ -15,7 +15,7 @@ The approach combines three tricks:
 | `driver/libfprint-2.so.2.0.0` | Proprietary FocalTech driver. We patch it (device table only). |
 | `src/shim.c` | Source for the compatibility shim. |
 | `src/shim.map` | Linker version script tagging the shim's symbols `LIBGUSB_0.1.0`. |
-| `60-libfprint-2.rules` | udev rules. Already contains entries for `2808:5952` (added in this repo). |
+| `80-focaltech-5952.rules` | udev rules for `2808:5952` (added by this repo). |
 | `focaltech-shim.so` | (Optional) Pre-built shim for OneXPlayer Super X on Fedora x86_64. Skip Step 2 if using this. |
 
 `driver/libfprint-2.so.2.0.0.bak` is a backup of the unpatched driver — keep it around in case you need to roll back.
@@ -131,21 +131,13 @@ ldd /usr/lib/libfprint-2.so.2.0.0 | grep -E "focal|gusb|not found"
 ## Step 4 — Install udev rules
 
 ```bash
-sudo cp 60-libfprint-2.rules /etc/udev/rules.d/
+sudo cp 80-focaltech-5952.rules /etc/udev/rules.d/
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
 
-## Step 5 — Disable USB autosuspend for the sensor
+## Step 5 — Apply autosuspend settings to currently-plugged sensor
 
-The kernel puts the sensor to sleep too aggressively; the driver then fails when it tries to talk to a sleeping device. The persistent udev rule below keeps it powered on.
-
-```bash
-sudo tee /etc/udev/rules.d/80-focaltech-fix.rules <<'EOF'
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2808", ATTR{idProduct}=="a658", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="2808", ATTR{idProduct}=="5952", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"
-EOF
-sudo udevadm control --reload-rules && sudo udevadm trigger
-```
+The kernel puts the sensor to sleep too aggressively; the driver then fails when it tries to talk to a sleeping device. The persistent udev rule is already included in `80-focaltech-5952.rules` from Step 4.
 
 For the currently-plugged device (the rule only takes effect on the next plug event), also do:
 

@@ -96,7 +96,7 @@ fi
 echo "found sensor ${VENDOR_ID}:${PRODUCT_ID}"
 
 # Confirm every source file we need is present.
-for f in "driver/$DRIVER_NAME" src/shim.c src/shim.map 60-libfprint-2.rules; do
+for f in "driver/$DRIVER_NAME" src/shim.c src/shim.map 80-focaltech-5952.rules; do
     require_file "$f"
 done
 
@@ -181,12 +181,7 @@ fi
 
 info "installing udev rules"
 
-sudo install -m 0644 60-libfprint-2.rules /etc/udev/rules.d/60-libfprint-2.rules
-
-sudo tee /etc/udev/rules.d/80-focaltech-fix.rules >/dev/null <<EOF
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="${VENDOR_ID}", ATTR{idProduct}=="a658", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"
-ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="${VENDOR_ID}", ATTR{idProduct}=="${PRODUCT_ID}", ATTR{power/control}="on", ATTR{power/autosuspend}="-1"
-EOF
+sudo install -m 0644 80-focaltech-5952.rules /etc/udev/rules.d/80-focaltech-5952.rules
 
 sudo udevadm control --reload-rules
 sudo udevadm trigger
