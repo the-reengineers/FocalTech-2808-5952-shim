@@ -231,7 +231,7 @@ Reports from other hardware are welcome. If you get it working on a different ma
 
 ## Credits
 
-This guide and the surrounding patches are derived from the [focaltech-ft9366-arch-shim](https://github.com/Klimentsi/focaltech-ft9366-arch-shim) repository by Klimentsi Katsko, which solved the same `libgusb` version-mismatch problem for the `2808:a658` sensor on Arch Linux. That project provided the original proprietary driver binary, the `shim.c` / `shim.map` compatibility layer, the udev rules, and the overall "proxy-shim" approach this guide builds on. The Fedora/`2808:5952` variations — device-table repurposing, visibility-flag compile fix, and `LD_PRELOAD` systemd drop-in — were worked out here on top of that foundation.
+This guide and the surrounding patches are derived from the [focaltech-ft9366-arch-shim](https://github.com/leopalladium/focaltech-ft9366-arch-shim) repository which solved the same problem for the `2808:a658` sensor on Arch Linux. That project provided the original proprietary driver binary, the `shim.c` / `shim.map` compatibility layer, the udev rules, and the overall "proxy-shim" approach this guide builds on. The Fedora/`2808:5952` variations — device-table repurposing, visibility-flag compile fix, and `LD_PRELOAD` systemd drop-in — were worked out here on top of that foundation.
 
 ## Disclaimer
 
